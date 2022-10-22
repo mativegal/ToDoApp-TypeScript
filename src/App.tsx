@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import Form from './components/Form'
+import TodoList from './components/TodoList'
+import initial_seed from './seed/initialseed'
+import { ITodo } from './types'
+import styles from './App.module.css'
 
 function App() {
+  const [todos, setTodos] = useState(initial_seed)
+
+  const addTodo = (todo: ITodo) => {
+    setTodos([...todos, todo])
+  }
+
+  const removeTodo = (id: number) => {
+    const newTodos = todos.filter((todo) => todo.id !== id)
+    setTodos(newTodos)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.app}>
+      <h1 className={styles.title}>Todo List</h1>
+      <TodoList todos={todos} removeTodo={removeTodo} />
+      <Form addTodo={addTodo} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
